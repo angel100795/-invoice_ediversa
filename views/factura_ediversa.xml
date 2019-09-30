@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record model="ir.actions.act_window" id="action_eDiversa_order_form">
+            <field name="name">eDiversa Facturas</field>
+            <field name="res_model">ediversa.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="id_principal_ediversa" name="Factura_eDiversa" sequence="0"/>
+         <menuitem id="id_buzon_entrada" parent="id_principal_ediversa" name="Inbox"  sequence="0"/>
+        <menuitem action="action_eDiversa_order_form" id="id_principal_mensages_act" parent="id_buzon_entrada" name="Messages" sequence="0"/>
+
+    </data>
+</openerp>
