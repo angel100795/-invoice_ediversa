@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+<data>
+
+
+
+    <!--=================ACCION ASISTENTE=============-->
+    <act_window
+        name="Enviar EDIversa_Factura"
+        res_model="export.factura.txt"
+        src_model="account.invoice"
+        view_mode="form" target="new"
+        key2="client_action_multi"
+        id="action_export_report_school"/>
+
+
+
+</data>
+</openerp>
