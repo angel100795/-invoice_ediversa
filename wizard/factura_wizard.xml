@@ -46,8 +46,30 @@
                        	<field name="pat_periodo" />
                        	<field name="pat_numero" />
                        	<field name="pat_entrega" />
-                       	
+                       	<p>Seccion de Resumen</p>
+                       	<p></p>
+                       	<p></p>
+                       	<p></p>
                        	<field name="moares_neto" required="1" />
+                       	<field name="moares_bruto" required="1" />
+                       	<field name="moares_base" required="1" />
+                       	<field name="moares_total" required="1" />
+                       	<field name="moares_impuestos" required="1" />
+                       	<field name="moares_descuentos" required="1" />
+                       	<field name="moares_cargos" required="1" />
+                       	<field name="moares_debido" required="1" />
+                       	<p>Impuestos totales</p>
+                       	<p></p>
+                       	<p></p>
+                       	<p></p>
+                       	<field name="taxres_tipo" required="1" />
+                       	<field name="taxres_porcentaje" required="1" />
+                       	<field name="taxres_importe" required="1" />
+                       	<field name="taxres_base" required="1" />
+                       	<field name="taxres_total" required="1" />
+                       	<field name="taxres_dis" required="1" />
+                       	<field name="taxres_categoria" required="1" />
+
                 	</group>
                 </sheet>
             </form>

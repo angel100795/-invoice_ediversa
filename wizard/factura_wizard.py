@@ -85,5 +85,30 @@ class export_factura_txt(models.Model):
     pat_entrega = fields.Datetime ('Fecha de entrega', readonly = False, select = True 
                                 , default = lambda self: fields.datetime.now ())
     moares_neto = fields.Integer('Importe neto de la factura')
+    moares_bruto = fields.Integer('Importe bruto')
+    moares_base = fields.Integer('Base imponible')
+    moares_total = fields.Integer('Importe total de la factura')
+    moares_impuestos = fields.Integer('Total de impuestos')
+    moares_descuentos = fields.Integer('Total de descuentos globales')
+    moares_cargos = fields.Integer('Total de cargos globales')
+    moares_debido = fields.Integer('Importe total a pagar')
+
+    taxres_tipo = fields.Selection([
+        ('VAT', 'IVA'),
+        ('IGI', 'IGIC'),
+        ('EXT', 'Exento de impuesto'),
+        ('ACT', 'Impuesto de alcoholes'),
+        ('RE', 'Recargo de equivalencia'),
+        ('ENV', 'Punto verde')],
+        'Calificador de tipo de impuesto')
+    taxres_porcentaje = fields.Integer('Porcentaje del impuesto aplicar')
+    taxres_importe = fields.Integer('Suma total de los importes del impuesto')
+    taxres_base = fields.Integer('Importe monetario de la base imponible') 
+    taxres_total = fields.Integer('Importe del impuesto')
+    taxres_dis = fields.Integer('Disposición nacional que da lugar a la exención del IVA')
+    taxres_categoria = fields.Selection([
+        ('E', 'Exento de impuestos'),
+        ('ES1', 'Se aplica el régimen especial del criterio de caja')],
+        'Categoría del impuesto')
 
 
