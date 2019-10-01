@@ -32,6 +32,22 @@
                        	<field name="nadpe" />
                        	<field name="cux_coin" required="1" />
                        	<field name="cux_cali" required="1" />
+                       	<p></p>
+                       	<p></p>
+                       	<p>PAT</p>
+                       	<p></p>
+                       	<p></p>
+                       	<p></p>
+                       	<field name="pat_cali" />
+                       	<field name="pat_ven" />
+                       	<field name="pat_import" />
+                       	<field name="pat_efect" />
+                       	<field name="pat_referencia" />
+                       	<field name="pat_periodo" />
+                       	<field name="pat_numero" />
+                       	<field name="pat_entrega" />
+                       	
+                       	<field name="moares_neto" required="1" />
                 	</group>
                 </sheet>
             </form>

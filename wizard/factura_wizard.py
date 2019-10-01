@@ -60,3 +60,30 @@ class export_factura_txt(models.Model):
         ('10', 'Divisa del precio'),
         ('11', 'Divisa del pago')],
         'Codigo de moneda', required=True)
+
+    pat_cali = fields.Selection([
+        ('1', 'Básico'),
+        ('21', 'Varios vencimientos'),
+        ('35', 'Pago único')],
+        'Condiciones de pago')
+    pat_ven = fields.Datetime ('Fecha de vencimiento', readonly = False, select = True 
+                                , default = lambda self: fields.datetime.now ())
+    pat_import = fields.Float('Importe del vencimiento')
+    pat_efect = fields.Datetime ('Fecha de efectiva', readonly = False, select = True 
+                                , default = lambda self: fields.datetime.now ())
+    pat_referencia = fields.Selection([
+        ('5', 'Después de la fecha factura'),
+        ('72', 'Fecha de pago'),
+        ('29', 'Depués de la fecha de entrega'),
+        ('68', 'Fecha de valor')],
+        'Referencia de tiempo de pago')
+    pat_periodo = fields.Selection([
+        ('D', 'Días'),
+        ('M', 'Meses')],
+        'Tipo de periodo')
+    pat_numero = fields.Integer('Numero de días o meses')
+    pat_entrega = fields.Datetime ('Fecha de entrega', readonly = False, select = True 
+                                , default = lambda self: fields.datetime.now ())
+    moares_neto = fields.Integer('Importe neto de la factura')
+
+
