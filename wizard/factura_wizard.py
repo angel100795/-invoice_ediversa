@@ -33,11 +33,30 @@ class export_factura_txt(models.Model):
         ('79E', 'Discrepancias o ajustes'),
         ('80E', 'Bonificaciones anuales (Rappel)')],
         'Condiciones especiales')
-    
+
     rff_cali = fields.Selection([
         ('DQ', 'Numero de albaran en papel'),
         ('ON', 'Numero de pedido'),
         ('AAN', 'Numero de planificacion de entregas')],
-        'Referencias', required=True, default="ON")
+        'Referencias', required=True)
     rff_referencia = fields.Char('Referencia del documento')
     rff_fecha = fields.Char('Fecha de referecia')
+    nadsco = fields.Char('codigo EDI emisor')
+    nadbco = fields.Char('codigo EDI receptor')
+    nadsu_cod_prove = fields.Char('codigo EDI Proveedor')
+    nadby_cod_cliente = fields.Char('codigo EDI Cliente')
+    nadiv = fields.Char('Codigo EDI a quien se factura')
+    nadms = fields.Char('Codigo EDI del emisor del mensaje')
+    nadmr = fields.Char('Codigo EDI del receptor del mensaje')
+    naddp = fields.Char('Codigo EDI del receptor de la mercancía')
+    nadpr = fields.Char('Codigo EDI del emisor del pago')
+    nadpe = fields.Char('Codigo EDI del receptor que paga')
+    cux_coin = fields.Selection([
+        ('EUR', 'Euro'),
+        ('USD', 'Dolar')],
+        'Codigo de moneda', required=True)
+    cux_cali = fields.Selection([
+        ('4', 'Divisa de la factura'),
+        ('10', 'Divisa del precio'),
+        ('11', 'Divisa del pago')],
+        'Codigo de moneda', required=True)

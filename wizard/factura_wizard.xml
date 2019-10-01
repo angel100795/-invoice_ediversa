@@ -20,7 +20,18 @@
                 		<field name = "pai" />
                 		<field name = "ali" />
                 		<field name="rff_cali" required="1"/>
-                       
+                       	<field name="nadsco" required="1" />
+                       	<field name="nadbco" required="1" />
+                       	<field name="nadsu_cod_prove" required="1" />
+                       	<field name="nadby_cod_cliente" required="1" />
+                       	<field name="nadiv" required="1" />
+                       	<field name="nadms" />
+                       	<field name="nadmr" />
+                       	<field name="naddp" required="1" />
+                       	<field name="nadpr" /> 
+                       	<field name="nadpe" />
+                       	<field name="cux_coin" required="1" />
+                       	<field name="cux_cali" required="1" />
                 	</group>
                 </sheet>
             </form>
