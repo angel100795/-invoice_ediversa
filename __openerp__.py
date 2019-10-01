@@ -6,13 +6,15 @@
     'depends': [
         'mail',
         'sale',
-        'purchase'
+        'purchase',
+        'account'
     ],
     'author': 'Quadit, S.A. de C.V.',
     'description': 'Factura eDiversa',
     'website': 'https://www.quadit.mx',
     'data': [
         'views/factura_ediversa.xml',
+        'wizard/factura_wizard.xml',
     ],
     'demo': [],
     'installable': True

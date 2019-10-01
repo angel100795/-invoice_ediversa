@@ -2,16 +2,40 @@
 <openerp>
 <data>
 
+<!--======FORM VIEW ======-->
+    <record id="export_factura" model="ir.ui.view">
+        <field name="name">export.factura.txt.form</field>
+        <field name="model">export.factura.txt</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="factura" >
+               <header>
+                    
+                </header>
+                <sheet>
+                	 <separator colspan="4" string="Generar documento de texto plano"/>
+                	<group col="4">
+                		<field name="type" required="1"/>
+                		<field name = "dtm_creacion" />
+                		<field name = "pai" />
+                		<field name = "ali" />
+                		<field name="rff_cali" required="1"/>
+                       
+                	</group>
+                </sheet>
+            </form>
+            </field>
+        </record>
 
 
-    <!--=================ACCION ASISTENTE=============-->
+    <!--=================ACCION ASISTENTE==================-->
     <act_window
-        name="Enviar EDIversa_Factura"
+        name="Enviar factura EDIversa"
         res_model="export.factura.txt"
         src_model="account.invoice"
         view_mode="form" target="new"
         key2="client_action_multi"
-        id="action_export_report_school"/>
+        id="action_export_factura"/>
 
 
 
