@@ -4,6 +4,18 @@
 from openerp import _, api, fields, models
 from openerp.tools.translate import _
 from openerp.exceptions import except_orm, Warning, RedirectWarning
+import base64
+from datetime import datetime
+# TRABAJAR CON LOS EXCEL
+import xlsxwriter
+import time
+
+import tempfile
+
+# SOLUCIONA CUALQUIER ERROR DE ENCODING (CARACTERES ESPECIALES)
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
@@ -11,12 +23,28 @@ class AccountInvoice(models.Model):
 class export_factura_txt(models.Model):
     _name = 'export.factura.txt'
     _description = 'Exportar Factura'
-
-
-    type = fields.Selection([('txt', 'TXT')], 'Tipo Exportacion',
-                            required=False, )
+    datas_fname = fields.Char('File Name', size=256)
     dtm_creacion = fields.Datetime ('Fecha creacion', readonly = False, select = True 
                                 , default = lambda self: fields.datetime.now ())
+    inv_numdoc = fields.Char('Numero de factura', size=256)
+    inv_tipo = fields.Selection([
+        ('380', 'Factura comercial'),
+        ('381', 'Nota de adono'),
+        ('325', 'Factura pro-forma'),
+        ('383', 'Nota de cargo'),
+        ('384', 'Factura Corregida'),
+        ('385', 'Factura recapitulada'),
+        ('389', 'Autofactura')],
+        'Tipo de documento')
+    inv_funcion = fields.Selection([
+        ('9', 'Original'),
+        ('5', 'Sustitucion'),
+        ('7', 'Duplicado'),
+        ('43', 'Transmisión adcional'),
+        ('31', 'Copia'),
+        ('2', 'Adición (Complementaria)')],
+        'Función del mensaje')
+
     pai = fields.Selection([
         ('20', 'Cheque'),
         ('42', 'A una cuenta bancaria'),
@@ -110,5 +138,69 @@ class export_factura_txt(models.Model):
         ('E', 'Exento de impuestos'),
         ('ES1', 'Se aplica el régimen especial del criterio de caja')],
         'Categoría del impuesto')
+
+    
+    file = fields.Binary('Layout')
+    download_file = fields.Boolean('Descargar Archivo')
+    cadena_decoding = fields.Text('Binario sin encoding')
+    type = fields.Selection([('txt', 'TXT')], 'Tipo Exportacion',
+                            required=False, )
+
+    _defaults = {
+        'download_file': False,
+        'type': 'txt',
+    }
+
+    @api.multi
+    def export_txt_file(self):
+        document_txt = ""
+
+        #split de fecha creacion
+        split_creacion = self.dtm_creacion.split('-')
+        split_creacion_dia = split_creacion[2].split(' ')
+        date_creacion = split_creacion[0]+split_creacion[1]+split_creacion_dia[0]
+        
+        sl = "\n"
+        # =>Cabecera
+        campo_inv = "%s|%s|%s|%s" % (
+                "INV", self.inv_numdoc, self.inv_tipo, self.inv_funcion)
+        campo_dtm = "%s|%s" % (
+                "DTM", date_creacion)
+        campo_pai = "%s|%s" % (
+                "PAI", self.pai)  
+        # =>Fin Cabecera
+
+        #creamos el archivo txt
+        file_name = 'desdav.txt'
+        date = datetime.now().strftime('%d-%m-%Y')
+        datas_fname = "Factura "+str(date)+".txt"  # Nombre del Archivo
+        
+
+        #abrimos el archivo txt especificando en que ruta de la maquina se guardara
+        document_txt = document_txt+"INVOIC_D_93A_UN_EAN007" + sl + campo_inv + sl + campo_dtm +sl + campo_pai
+        with open('/tmp/'+file_name, 'w+') as f:
+            #le asiganamos que informacion guardara
+            f.write(document_txt)
+        f.close()
+        with open('/tmp/'+file_name, 'r+') as r:
+            print "rrrrrrrrrrr", r
+            self.write({
+                        'cadena_decoding': document_txt,
+                        'datas_fname': datas_fname,
+                        'file': base64.b64encode(r.read()),
+                        'download_file': True})
+            print "f.read()", r.read()
+        r.close()
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'export.factura.txt',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'res_id': self.id,
+            'views': [(False, 'form')],
+            'target': 'new',
+        }
+
+
 
 

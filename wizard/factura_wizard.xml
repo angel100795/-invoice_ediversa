@@ -15,7 +15,9 @@
                 <sheet>
                 	 <separator colspan="4" string="Generar documento de texto plano"/>
                 	<group col="4">
-                		<field name="type" required="1"/>
+                		<field name="inv_numdoc" required="1"/>
+                		<field name="inv_tipo" required="1"/>
+                		<field name="inv_funcion" required="1"/>
                 		<field name = "dtm_creacion" />
                 		<field name = "pai" />
                 		<field name = "ali" />
@@ -72,6 +74,14 @@
 
                 	</group>
                 </sheet>
+                 <footer>
+                    <center>
+
+                        <button name="export_txt_file" string="Generar" type="object"  icon="gtk-execute"/>
+                        
+                        <button string="Cancelar" class="oe_link" special="cancel" icon="gtk-cancel"/>
+                    </center>
+                </footer>
             </form>
             </field>
         </record>
