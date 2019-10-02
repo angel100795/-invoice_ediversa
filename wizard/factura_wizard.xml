@@ -15,24 +15,16 @@
                 <sheet>
                 	 <separator colspan="4" string="Generar documento de texto plano"/>
                 	<group col="2">
+                		
                 		<field name="inv_numdoc" required="1"/>
                 		<field name="inv_tipo" required="1"/>
                 		<field name="inv_funcion" required="1"/>
-                	</group>
-                	<group col="4">
                 		<field name = "dtm_creacion" />
                 		<field name = "pai" />
                 		<field name = "ali" />
-                	</group>
-                	<group col="4">
                 		<field name="rff_cali" required="1"/>
                 		<field name="rff_referencia" required="1"/>
                 		<field name="rff_fecha" required="1"/>
-                	</group>
-                	<group col="4">
-                		
-                		
-                		
                        	<field name="nadsco" required="1" />
                        	<field name="nadbco" required="1" />
                        	<field name="nadsu_cod_prove" required="1" />
@@ -45,11 +37,8 @@
                        	<field name="nadpe" />
                        	<field name="cux_coin" required="1" />
                        	<field name="cux_cali" required="1" />
-                       	<p></p>
-                       	<p></p>
+                       	
                        	<p>PAT</p>
-                       	<p></p>
-                       	<p></p>
                        	<p></p>
                        	<field name="pat_cali" />
                        	<field name="pat_ven" />
@@ -61,8 +50,6 @@
                        	<field name="pat_entrega" />
                        	<p>Seccion de Resumen</p>
                        	<p></p>
-                       	<p></p>
-                       	<p></p>
                        	<field name="moares_neto" required="1" />
                        	<field name="moares_bruto" required="1" />
                        	<field name="moares_base" required="1" />
@@ -72,8 +59,6 @@
                        	<field name="moares_cargos" required="1" />
                        	<field name="moares_debido" required="1" />
                        	<p>Impuestos totales</p>
-                       	<p></p>
-                       	<p></p>
                        	<p></p>
                        	<field name="taxres_tipo" required="1" />
                        	<field name="taxres_porcentaje" required="1" />

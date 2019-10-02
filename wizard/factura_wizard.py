@@ -89,7 +89,7 @@ class export_factura_txt(models.Model):
         ('4', 'Divisa de la factura'),
         ('10', 'Divisa del precio'),
         ('11', 'Divisa del pago')],
-        'Codigo de moneda', required=True)
+        'Calificador de la divisa', required=True)
 
     pat_cali = fields.Selection([
         ('1', 'Básico'),
@@ -161,6 +161,26 @@ class export_factura_txt(models.Model):
         split_creacion = self.dtm_creacion.split('-')
         split_creacion_dia = split_creacion[2].split(' ')
         date_creacion = split_creacion[0]+split_creacion[1]+split_creacion_dia[0]
+
+        #split de fecha referencia
+        split_creacion = self.rff_fecha.split('-')
+        split_creacion_dia = split_creacion[2].split(' ')
+        date_referencia = split_creacion[0]+split_creacion[1]+split_creacion_dia[0]
+
+        #split de fecha pat_ve,
+        split_creacion = self.pat_ven.split('-')
+        split_creacion_dia = split_creacion[2].split(' ')
+        date_pat_ven = split_creacion[0]+split_creacion[1]+split_creacion_dia[0]
+        
+        #split de fecha pat_efec,
+        split_creacion = self.pat_efect.split('-')
+        split_creacion_dia = split_creacion[2].split(' ')
+        date_pat_ref = split_creacion[0]+split_creacion[1]+split_creacion_dia[0]
+        
+        #split de fecha pat_ent,
+        split_creacion = self.pat_entrega.split('-')
+        split_creacion_dia = split_creacion[2].split(' ')
+        date_pat_ent = split_creacion[0]+split_creacion[1]+split_creacion_dia[0]
         
         sl = "\n"
 
@@ -182,10 +202,33 @@ class export_factura_txt(models.Model):
                 "ALI", self.ali) 
             document_txt = document_txt+ sl + campo_ali
 
-        campo_ff
+        campo_rff = "%s|%s|%s|%s" % (
+                "RFF", self.rff_cali,self.rff_referencia,date_referencia)
 
+        document_txt = document_txt+ sl + campo_rff
+
+        campo_cux = "%s|%s|%s" % (
+                "CUX", self.cux_coin,self.cux_cali)
+
+        document_txt = document_txt+ sl + campo_cux
+        
+        if self.pat_cali:
+            campo_pat = "%s|%s|%s|%s|%s|%s|%s|%s|%s" % (
+                "PAT", self.pat_cali,date_pat_ven,self.pat_import,date_pat_ref,self.pat_referencia,self.pat_periodo,self.pat_numero,date_pat_ent)
+            document_txt = document_txt+ sl + campo_pat
 
         # =>Fin Cabecera
+
+
+        # =>Resumen
+
+        campo_cntres = "%s|%s" % (
+                "CNTRES", "2")
+
+
+        document_txt = document_txt+ sl + campo_cntres
+
+        # =>Fin Resumen
 
         #creamos el archivo txt
         file_name = 'desdav.txt'
