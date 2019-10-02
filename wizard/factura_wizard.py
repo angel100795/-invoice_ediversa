@@ -62,13 +62,15 @@ class export_factura_txt(models.Model):
         ('80E', 'Bonificaciones anuales (Rappel)')],
         'Condiciones especiales')
 
+
     rff_cali = fields.Selection([
         ('DQ', 'Numero de albaran en papel'),
         ('ON', 'Numero de pedido'),
         ('AAN', 'Numero de planificacion de entregas')],
         'Referencias', required=True)
     rff_referencia = fields.Char('Referencia del documento')
-    rff_fecha = fields.Char('Fecha de referecia')
+    rff_fecha = fields.Datetime ('Fecha referencia', readonly = False, select = True 
+                                , default = lambda self: fields.datetime.now ())
     nadsco = fields.Char('codigo EDI emisor')
     nadbco = fields.Char('codigo EDI receptor')
     nadsu_cod_prove = fields.Char('codigo EDI Proveedor')
@@ -161,13 +163,28 @@ class export_factura_txt(models.Model):
         date_creacion = split_creacion[0]+split_creacion[1]+split_creacion_dia[0]
         
         sl = "\n"
+
+        document_txt = document_txt+"invoic_d_93a_un_ean007"
         # =>Cabecera
         campo_inv = "%s|%s|%s|%s" % (
                 "INV", self.inv_numdoc, self.inv_tipo, self.inv_funcion)
+        document_txt = document_txt+ sl + campo_inv
         campo_dtm = "%s|%s" % (
                 "DTM", date_creacion)
-        campo_pai = "%s|%s" % (
-                "PAI", self.pai)  
+        document_txt = document_txt+ sl + campo_dtm
+        if self.pai:
+            campo_pai = "%s|%s" % (
+                "PAI", self.pai)
+            document_txt = document_txt+ sl + campo_pai
+        
+        if self.ali:
+            campo_ali = "%s|%s" % (
+                "ALI", self.ali) 
+            document_txt = document_txt+ sl + campo_ali
+
+        campo_ff
+
+
         # =>Fin Cabecera
 
         #creamos el archivo txt
@@ -177,7 +194,7 @@ class export_factura_txt(models.Model):
         
 
         #abrimos el archivo txt especificando en que ruta de la maquina se guardara
-        document_txt = document_txt+"INVOIC_D_93A_UN_EAN007" + sl + campo_inv + sl + campo_dtm +sl + campo_pai
+        
         with open('/tmp/'+file_name, 'w+') as f:
             #le asiganamos que informacion guardara
             f.write(document_txt)
