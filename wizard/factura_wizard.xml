@@ -10,13 +10,14 @@
         <field name="arch" type="xml">
             <form string="factura" >
                <header>
-                    
+                    <field name="datas_fname" invisible="1" />
+                    <field name="download_file" invisible="1" />
                 </header>
                 <sheet>
                 	 <separator colspan="4" string="Generar documento de texto plano"/>
                 	<group col="2">
                 		
-                		<field name="inv_numdoc" required="1"/>
+                		<field name="inv_numdoc" required="1" readonly="1"/>
                 		<field name="inv_tipo" required="1"/>
                 		<field name="inv_funcion" required="1"/>
                 		<field name = "dtm_creacion" />
@@ -25,8 +26,8 @@
                 		<field name="rff_cali" required="1"/>
                 		<field name="rff_referencia" required="1"/>
                 		<field name="rff_fecha" required="1"/>
-                       	<field name="nadsco" required="1" />
-                       	<field name="nadbco" required="1" />
+                       	<field name="nadsco" required="1" readonly="1"/>
+                       	<field name="nadbco" required="1" readonly="1"/>
                        	<field name="nadsu_cod_prove" required="1" />
                        	<field name="nadby_cod_cliente" required="1" />
                        	<field name="nadiv" required="1" />
@@ -70,7 +71,20 @@
 
                 	</group>
                 </sheet>
-                 <footer>
+                 <sheet attrs="{'invisible':[('download_file','=',False)]}">
+                    <div >
+                        <h2>Generacion Completa</h2>
+                        <p>Descarga el Documento: <field name="file" readonly="1" filename="datas_fname"/></p>
+                        <p> Documento Generado (TXT - .txt) y Codificado<strong>Unicode/UTF-8</strong></p>
+                    </div>
+                </sheet>
+                <footer attrs="{'invisible':[('download_file','=',False)]}">
+                    <center>
+
+                        <button string="Cerrar" special="cancel"  icon="gtk-cancel" class="oe_highlight"/>
+                    </center>
+                </footer>
+                 <footer attrs="{'invisible':[('download_file','=',True)]}">
                     <center>
 
                         <button name="export_txt_file" string="Generar" type="object"  icon="gtk-execute"/>

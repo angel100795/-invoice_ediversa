@@ -17,13 +17,42 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
+class res_partner(models.Model):
+    _name = 'res.partner'
+    _inherit = 'res.partner'
+
+
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
+
 
 class export_factura_txt(models.Model):
     _name = 'export.factura.txt'
     _description = 'Exportar Factura'
+
+
+    @api.model
+    def default_get(self,values):
+        res = super(export_factura_txt,self).default_get(values)
+        active_id = self._context.get('active_ids')
+        invoice_id = self.env['account.invoice'].browse(active_id)
+        for invoice in invoice_id:
+            print ("<<<<------------>>>",invoice.number)
+            print ("<<<<------------>>>",invoice.user_id.codigo_provedor)
+
+        res.update({
+                'inv_numdoc':invoice.number,
+                'nadsco':invoice.user_id.codigo_provedor,
+                'nadsco_name':invoice.user_id.name,
+                'nadbco':invoice.partner_id.codigo_provedor,
+                'nadbco_name':invoice.partner_id.name
+
+                })
+        
+        return res 
+
     datas_fname = fields.Char('File Name', size=256)
+    download_file = fields.Boolean('Descargar Archivo')
     dtm_creacion = fields.Datetime ('Fecha creacion', readonly = False, select = True 
                                 , default = lambda self: fields.datetime.now ())
     inv_numdoc = fields.Char('Numero de factura', size=256)
@@ -45,6 +74,8 @@ class export_factura_txt(models.Model):
         ('2', 'Adición (Complementaria)')],
         'Función del mensaje')
 
+    user_id = fields.Many2one('account.invoice','user_id')
+    
     pai = fields.Selection([
         ('20', 'Cheque'),
         ('42', 'A una cuenta bancaria'),
@@ -72,7 +103,9 @@ class export_factura_txt(models.Model):
     rff_fecha = fields.Datetime ('Fecha referencia', readonly = False, select = True 
                                 , default = lambda self: fields.datetime.now ())
     nadsco = fields.Char('codigo EDI emisor')
+    nadsco_name = fields.Char('nombre emisor')
     nadbco = fields.Char('codigo EDI receptor')
+    nadbco_name = fields.Char('codigo EDI receptor')
     nadsu_cod_prove = fields.Char('codigo EDI Proveedor')
     nadby_cod_cliente = fields.Char('codigo EDI Cliente')
     nadiv = fields.Char('Codigo EDI a quien se factura')
@@ -156,7 +189,7 @@ class export_factura_txt(models.Model):
     @api.multi
     def export_txt_file(self):
         document_txt = ""
-
+        print("---DDDDDDD______dddddd",self.env['account.invoice'])
         #split de fecha creacion
         split_creacion = self.dtm_creacion.split('-')
         split_creacion_dia = split_creacion[2].split(' ')
@@ -206,6 +239,16 @@ class export_factura_txt(models.Model):
                 "RFF", self.rff_cali,self.rff_referencia,date_referencia)
 
         document_txt = document_txt+ sl + campo_rff
+
+        campo_nadsco ="%s|%s|%s" % (
+                "NADSCO",self.nadsco,self.nadsco_name)
+
+        document_txt = document_txt+ sl + campo_nadsco
+
+        campo_nadbco ="%s|%s|%s" % (
+                "NADBCO",self.nadbco,self.nadbco_name)
+
+        document_txt = document_txt+ sl + campo_nadbco
 
         campo_cux = "%s|%s|%s" % (
                 "CUX", self.cux_coin,self.cux_cali)
